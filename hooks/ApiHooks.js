@@ -25,7 +25,7 @@ const useLoadMedia = () => {
     }
   };
   useEffect(() => {
-    loadMedia(10);
+    loadMedia(20);
   }, []);
   return mediaArray;
 };
