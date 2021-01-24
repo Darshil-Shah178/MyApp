@@ -1,6 +1,6 @@
 import React from "react";
-import { useLoadMedia } from "../hooks/ApiHooks";
 import { FlatList } from "react-native";
+import { useLoadMedia } from "../hooks/ApiHooks";
 import ListItem from "./ListItem";
 import PropTypes from "prop-types";
 
@@ -12,10 +12,7 @@ const List = ({ navigation }) => {
       data={mediaArray}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        <ListItem
-          navigation={navigation} // without destucturing
-          singleMedia={item}
-        />
+        <ListItem navigation={navigation} singleMedia={item} />
       )}
     />
   );
