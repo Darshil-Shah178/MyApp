@@ -12,8 +12,8 @@ const Login = ({ navigation }) => {
 
   const logIn = async () => {
     const testUser = {
-      username: "mattpe2021",
-      password: "masanpassu",
+      username: "darshils",
+      password: "darsh302",
     };
     try {
       const userData = await postLogin(testUser);
