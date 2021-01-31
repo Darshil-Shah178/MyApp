@@ -1,16 +1,24 @@
-import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, KeyboardAvoidingView, Platform } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import PropTypes from "prop-types";
 import { MainContext } from "../contexts/MainContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../hooks/ApiHooks";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
-import { Card, Text } from "react-native-elements";
+import { Card, ListItem, Text } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Login = ({ navigation }) => {
-  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(MainContext);
-  console.log("isLoggedIn?", isLoggedIn);
+  const { setIsLoggedIn, setUser } = useContext(MainContext);
+  const [formToggle, setFormToggle] = useState(true);
   const { checkToken } = useUser();
 
   const getToken = async () => {
@@ -32,33 +40,64 @@ const Login = ({ navigation }) => {
   }, []);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-    >
-      <View style={styles.appTitle}>
-        <Text h1>MyApp</Text>
-      </View>
-      <View style={styles.form}>
-        <Card>
-          <Card.Title h4>Login</Card.Title>
-          <Card.Divider />
-          <LoginForm navigation={navigation} />
-        </Card>
-        <Card>
-          <Card.Title h4>Register</Card.Title>
-          <Card.Divider />
-          <RegisterForm navigation={navigation} />
-        </Card>
-      </View>
-    </KeyboardAvoidingView>
+    <ScrollView>
+      {/* disabled by teacher for android testing */}
+      {/* <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        enabled
+      > */}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.inner}>
+          <View style={styles.appTitle}>
+            <Text h4>MyApp</Text>
+          </View>
+          <View style={styles.form}>
+            <Card>
+              {formToggle ? (
+                <>
+                  <Card.Title h5>Login</Card.Title>
+                  <Card.Divider />
+                  <LoginForm navigation={navigation} />
+                </>
+              ) : (
+                <>
+                  <Card.Title h5>Register</Card.Title>
+                  <Card.Divider />
+                  <RegisterForm navigation={navigation} />
+                </>
+              )}
+              <ListItem
+                onPress={() => {
+                  setFormToggle(!formToggle);
+                }}
+              >
+                <ListItem.Content>
+                  <Text style={styles.text}>
+                    {formToggle
+                      ? "No account? Register here."
+                      : "Already registered? Login here."}
+                  </Text>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            </Card>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      {/* </KeyboardAvoidingView> */}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+  },
+  inner: {
+    padding: 12,
+    flex: 1,
+    justifyContent: "space-around",
   },
   appTitle: {
     flex: 1,
@@ -66,7 +105,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   form: {
-    flex: 4,
+    flex: 2,
+  },
+  text: {
+    alignSelf: "center",
+    padding: 20,
   },
 });
 
