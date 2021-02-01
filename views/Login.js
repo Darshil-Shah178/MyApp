@@ -7,6 +7,7 @@ import { useUser } from "../hooks/ApiHooks";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import { Card, Text } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Login = ({ navigation }) => {
   const { isLoggedIn, setIsLoggedIn, setUser } = useContext(MainContext);
@@ -32,6 +33,7 @@ const Login = ({ navigation }) => {
   }, []);
 
   return (
+    <ScrollView>
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -52,6 +54,7 @@ const Login = ({ navigation }) => {
         </Card>
       </View>
     </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
